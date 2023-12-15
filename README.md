@@ -2,7 +2,7 @@
 
 ## 关于具体 demo 在哪
 
-`demo/main` 分支对应了 `EasySwoole 3.7.x` 版本的 `demo`，`main` 主要是 `EasySwoole` 基础使用的例子，其他使用请看其他对应的分支。
+`demo-3.7.x/main` 分支对应了 `EasySwoole 3.7.x` 版本的 `demo`，`main` 主要是 `EasySwoole` 基础使用的例子，其他使用请看其他对应的分支。
 
 ## `DEMO` 运行环境要求
 
