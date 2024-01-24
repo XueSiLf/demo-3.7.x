@@ -25,6 +25,8 @@ class EasySwooleEvent implements Event
         date_default_timezone_set('Asia/Shanghai');
 
         // 加载配置文件
+        Config::getInstance()->loadDir(EASYSWOOLE_ROOT . '/Config');
+
         self::loadExtraConfig();
 
         ###### 注册数据库连接池【使用FastDb组件】 ######

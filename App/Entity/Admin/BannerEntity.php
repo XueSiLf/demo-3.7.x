@@ -51,11 +51,10 @@ class BannerEntity extends BaseEntity
 
         $where['state'] = $state;
 
-        /** \EasySwoole\FastDb\Beans\ListResult $listResult */
-        $listResult = $this->page($page, true, $pageSize)
-            ->orderBy($this->primaryKey, 'DESC')
-            ->where($where)
-            ->all();
+        $this->queryLimit()->page($page, withTotalCount: true, pageSize: $pageSize)
+            ->orderBy($this->primaryKey, 'DESC');
+        /** \EasySwoole\FastDb\Beans\ListResult $resultList */
+        $listResult = $this->where($where)->all();
         $total = $listResult->totalCount();
         $list = $listResult->list();
 

@@ -57,7 +57,7 @@ class Auth extends UserBase
 
         if ($userInfo = $entity->login()) {
             $sessionHash = md5(time() . $userInfo->userId);
-            $userInfo->update([
+            $userInfo->updateWithLimit([
                 'lastLoginIp'   => $this->clientRealIP(),
                 'lastLoginTime' => time(),
                 'userSession'   => $sessionHash

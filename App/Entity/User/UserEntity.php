@@ -79,10 +79,10 @@ class UserEntity extends BaseEntity
             $where['userAccount'] = ['%' . $keyword . '%', 'like'];
         }
 
+        $this->queryLimit()->page($page, withTotalCount: true, pageSize: $pageSize)
+            ->orderBy($this->primaryKey, 'DESC');
         /** \EasySwoole\FastDb\Beans\ListResult $resultList */
         $resultList = $this
-            ->page(page: $page, withTotalCount: true, pageSize: $pageSize)
-            ->orderBy($this->primaryKey, 'DESC')
             ->where($where)
             ->all();
 
@@ -94,8 +94,8 @@ class UserEntity extends BaseEntity
 
     public function getOneByPhone(array $field = ['*']): ?UserEntity
     {
-        $info = $this->fields($field)->getOne(['phone' => $this->phone]);
-        return $info;
+        $this->queryLimit()->fields($field);
+        return $this->find(['phone' => $this->phone]);
     }
 
     /*
@@ -103,22 +103,20 @@ class UserEntity extends BaseEntity
     */
     public function login(): ?UserEntity
     {
-        $info = $this->getOne([
+        return $this->find([
             'userAccount'  => $this->userAccount,
             'userPassword' => $this->userPassword
         ]);
-        return $info;
     }
 
     public function getOneBySession(array $field = ['*']): ?UserEntity
     {
-        $info = $this->fields($field)->getOne(['userSession' => $this->userSession]);
-        return $info;
+        $this->queryLimit()->fields($field);
+        return $this->find(['userSession' => $this->userSession]);
     }
 
     public function logout()
     {
-        return $this->where([$this->primaryKey => $this->userId])
-            ->update(['userSession' => '']);
+        return $this->where([$this->primaryKey => $this->userId])->updateWithLimit(['userSession' => '']);
     }
 }

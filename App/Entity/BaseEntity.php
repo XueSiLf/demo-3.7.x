@@ -11,10 +11,9 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use EasySwoole\FastDb\Entity;
-use EasySwoole\Mysqli\QueryBuilder;
+use EasySwoole\FastDb\AbstractInterface\AbstractEntity;
 
-class BaseEntity extends Entity
+class BaseEntity extends AbstractEntity
 {
     protected string $table;
     protected string $primaryKey;
@@ -26,15 +25,13 @@ class BaseEntity extends Entity
 
     protected function where(array $where): BaseEntity
     {
-        $this->whereCall(function (QueryBuilder $queryBuilder) use ($where) {
-            foreach ($where as $field => $value) {
-                if (is_array($value)) {
-                    $queryBuilder->where($field, $value[0], $value[1]);
-                } else {
-                    $queryBuilder->where($field, $value);
-                }
+        foreach ($where as $field => $value) {
+            if (is_array($value)) {
+                $this->queryLimit()->where($field, $value[0], $value[1]);
+            } else {
+                $this->queryLimit()->where($field, $value);
             }
-        });
+        }
 
         return $this;
     }

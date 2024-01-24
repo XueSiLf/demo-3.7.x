@@ -13,6 +13,7 @@ namespace App\Entity\Admin;
 
 use App\Entity\BaseEntity;
 use EasySwoole\FastDb\Attributes\Property;
+use EasySwoole\FastDb\Beans\Query;
 
 /**
  * Class AdminModel
@@ -61,11 +62,11 @@ class AdminEntity extends BaseEntity
             $where['adminAccount'] = ['%' . $keyword . '%', 'like'];
         }
 
+        $this->queryLimit()->page($page, true, $pageSize)
+            ->orderBy($this->primaryKey, 'DESC');
+
         /** \EasySwoole\FastDb\Beans\ListResult $resultList */
-        $resultList = $this->page($page, true, $pageSize)
-            ->orderBy($this->primaryKey, 'DESC')
-            ->where($where)
-            ->all();
+        $resultList = $this->where($where)->all();
 
         $total = $resultList->totalCount();
         $list = $resultList->list();
@@ -82,8 +83,7 @@ class AdminEntity extends BaseEntity
             'adminAccount'  => $this->adminAccount,
             'adminPassword' => $this->adminPassword
         ];
-        $info = $this->getOne($where);
-        return $info;
+        return self::findRecord($where);
     }
 
     /**
@@ -91,18 +91,23 @@ class AdminEntity extends BaseEntity
      */
     public function accountExist(array $field = ['*']): ?AdminEntity
     {
-        $info = $this->fields($field)->getOne(['adminAccount' => $this->adminAccount]);
-        return $info;
+        return self::findRecord(function (Query $query) use ($field) {
+            $query->fields($field)
+                ->where('adminAccount', $this->adminAccount);
+        });
     }
 
     public function getOneBySession(array $field = ['*']): ?AdminEntity
     {
-        $info = $this->fields($field)->getOne(['adminSession' => $this->adminSession]);
-        return $info;
+        $this->queryLimit()->fields($field);
+        $this->where(['adminSession' => $this->adminSession]);
+        return $this->find();
     }
 
     public function logout()
     {
-        return $this->where([$this->primaryKey => $this->adminId])->update(['adminSession' => '']);
+        $where = [$this->primaryKey => $this->adminId];
+        $update = ['adminSession' => ''];
+        return self::fastUpdate($where, $update);
     }
 }

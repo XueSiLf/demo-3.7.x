@@ -81,7 +81,7 @@ class User extends AdminBase
     {
         $param = $this->request()->getRequestParam();
         $model = new UserEntity();
-        $rs = $model->getOne($param['userId']);
+        $rs = $model->find((int)$param['userId']);
         if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, 'success');
         } else {
@@ -175,7 +175,7 @@ class User extends AdminBase
         /**
          * @var $userInfo UserEntity
          */
-        $userInfo = $entity->getOne($userId);
+        $userInfo = $entity->find((int)$userId);
         if (!$userInfo) {
             $this->writeJson(Status::CODE_BAD_REQUEST, [], '未找到该会员');
             return false;
@@ -183,15 +183,14 @@ class User extends AdminBase
 
         $password = $this->input('userPassword');
         $update = [
-            'userId'       => $userId,
             'userName'     => $this->input('userName', $userInfo->userName),
             'userPassword' => $password ? md5($password) : $userInfo->userPassword,
             'state'        => $this->input('state', $userInfo->state),
             'phone'        => $this->input('phone', $userInfo->phone),
         ];
 
-        $rs = $entity->update($update);
-        if ($rs) {
+        $rs = $userInfo->updateWithLimit($update);
+        if ($rs === 0 || $rs === 1) {
             $this->writeJson(Status::CODE_OK, $rs, 'success');
         } else {
             $this->writeJson(Status::CODE_BAD_REQUEST, [], 'update fail');
@@ -217,8 +216,8 @@ class User extends AdminBase
     public function delete()
     {
         $param = $this->request()->getRequestParam();
-        $entity = new UserEntity();
-        $rs = $entity->delete(['userId' => $param['userId']]);
+        $entity = new UserEntity(['userId' => $param['userId']]);
+        $rs = $entity->delete();
         if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, 'success');
         } else {

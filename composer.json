@@ -4,8 +4,8 @@
         "ext-swoole": "^4.4.23|^5.0",
         "easyswoole/easyswoole": "3.7.1",
         "swoole/ide-helper": "^5.1",
-        "easyswoole/fast-db": "^1.3",
-        "easyswoole/file-watcher": "dev-master"
+        "easyswoole/file-watcher": "dev-master",
+        "easyswoole/fast-db": "^2.0"
     },
     "autoload": {
         "psr-4": {

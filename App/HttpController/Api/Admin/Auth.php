@@ -63,7 +63,7 @@ class Auth extends AdminBase
 
         if ($user = $entity->login()) {
             $sessionHash = md5(time() . $user->adminId);
-            $user->update([
+            $user->updateWithLimit([
                 'adminLastLoginTime' => time(),
                 'adminLastLoginIp'   => $this->clientRealIP(),
                 'adminSession'       => $sessionHash

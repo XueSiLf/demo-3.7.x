@@ -49,6 +49,9 @@ composer dump-autoload
 在 `Config/DATABASE.php` 中的 `DATABASE.MYSQL` 配置项中修改 `name` 为 `default` 的 `MYSQL` 配置 `host`、`port`、`user`、`password`
 、`database`，修改其为项目正确可用的配置。
 
+> 如果您使用的 `swoole` 版本是 `5.x` 版本，请修改 `Config/DATABASE.php` 中的 `DATABASE.MYSQL.default.useMysqli` 配置项为 `true`。否则会出如下废弃警告：```[2024-01-24 19:59:57][trigger][notice]:[Method Swoole\Coroutine\MySQL::__construct() is deprecated at file:/tmp/easyswoole/demo-3.7.x/vendor/easyswoole/mysqli/src/Client.php line:160]
+```。
+
 ### 启动项目
 
 ```
