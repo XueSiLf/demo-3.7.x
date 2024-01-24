@@ -14,7 +14,7 @@ namespace App\HttpController;
 use EasySwoole\EasySwoole\ServerManager;
 use EasySwoole\HttpAnnotation\AnnotationController;
 
-class BaseController extends AnnotationController
+class Base extends AnnotationController
 {
     public function index(): void
     {

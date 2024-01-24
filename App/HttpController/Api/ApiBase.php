@@ -11,14 +11,13 @@ declare(strict_types=1);
 
 namespace App\HttpController\Api;
 
-use App\HttpController\BaseController;
+use App\HttpController\Base;
 use EasySwoole\EasySwoole\Core;
 use EasySwoole\EasySwoole\Trigger;
 use EasySwoole\Http\Message\Status;
-use EasySwoole\HttpAnnotation\Exception\Annotation;
 use EasySwoole\HttpAnnotation\Exception\ValidateFail;
 
-class ApiBase extends BaseController
+class ApiBase extends Base
 {
     public function index(): void
     {
@@ -40,9 +39,6 @@ class ApiBase extends BaseController
 
     protected function onException(\Throwable $throwable): void
     {
-        var_dump($throwable->getFile());
-        var_dump($throwable->getLine());
-        var_dump($throwable->getMessage());
         if ($throwable instanceof ValidateFail) {
             $this->writeJson(400, null, $throwable->getMessage());
         } else {
