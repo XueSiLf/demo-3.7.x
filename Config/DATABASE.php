@@ -13,6 +13,7 @@ return [
         'MYSQL' => [
             [
                 'name'              => 'default', // 数据库连接池名称
+                'useMysqli'         => false, // 是否是使用php-mysqli扩展
                 'host'              => '127.0.0.1', // 数据库地址
                 'port'              => 3306, // 数据库端口
                 'user'              => 'easyswoole', // 数据库用户名
