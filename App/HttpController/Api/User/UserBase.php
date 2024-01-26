@@ -11,13 +11,13 @@ declare(strict_types=1);
 
 namespace App\HttpController\Api\User;
 
-use App\Entity\User\UserEntity;
+use App\Model\User\UserModel;
 use App\HttpController\Api\ApiBase;
 use EasySwoole\Http\Message\Status;
 
 class UserBase extends ApiBase
 {
-    protected ?UserEntity $who;
+    protected ?UserModel $who;
 
     // session 的 cookie 头
     protected string $sessionKey = 'userSession';
@@ -48,9 +48,9 @@ class UserBase extends ApiBase
         return false;
     }
 
-    public function getWho(): ?UserEntity
+    public function getWho(): ?UserModel
     {
-        if (isset($this->who) && $this->who instanceof UserEntity) {
+        if (isset($this->who) && $this->who instanceof UserModel) {
             return $this->who;
         }
 
@@ -63,9 +63,9 @@ class UserBase extends ApiBase
             return null;
         }
 
-        $userEntity = new UserEntity();
-        $userEntity->userSession = $sessionKey;
-        $this->who = $userEntity->getOneBySession();
+        $userModel = new UserModel();
+        $userModel->userSession = $sessionKey;
+        $this->who = $userModel->getOneBySession();
 
         return $this->who;
     }

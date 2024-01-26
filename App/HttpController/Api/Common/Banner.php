@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace App\HttpController\Api\Common;
 
-use App\Entity\Admin\BannerEntity;
+use App\Model\Admin\BannerModel;
 use EasySwoole\Http\Message\Status;
 use EasySwoole\HttpAnnotation\Attributes\Api;
 use EasySwoole\HttpAnnotation\Attributes\Description;
@@ -44,8 +44,8 @@ class Banner extends CommonBase
     public function getOne()
     {
         $param = $this->request()->getRequestParam();
-        $entity = new BannerEntity();
-        $bean = $entity->find((int)$param['bannerId']);
+        $model = new BannerModel();
+        $bean = $model->find((int)$param['bannerId']);
         if ($bean) {
             $this->writeJson(Status::CODE_OK, $bean, 'success');
         } else {
@@ -82,8 +82,8 @@ class Banner extends CommonBase
         $param = $this->request()->getRequestParam();
         $page = (int)$this->input('page', 1);
         $limit = (int)$this->input('limit', 20);
-        $entity = new BannerEntity();
-        $data = $entity->getAll($page, 1, $param['keyword'] ?? null, $limit);
+        $model = new BannerModel();
+        $data = $model->getAll($page, 1, $param['keyword'] ?? null, $limit);
         $this->writeJson(Status::CODE_OK, $data, 'success');
     }
 }

@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace App\HttpController;
 
-use App\Entity\Admin\AdminEntity;
-use App\Entity\Admin\BannerEntity;
-use App\Entity\User\UserEntity;
+use App\Model\Admin\AdminModel;
+use App\Model\Admin\BannerModel;
+use App\Model\User\UserModel;
 use EasySwoole\Http\AbstractInterface\Controller;
 
 class Index extends Controller

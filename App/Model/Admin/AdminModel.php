@@ -9,9 +9,9 @@
  */
 declare(strict_types=1);
 
-namespace App\Entity\Admin;
+namespace App\Model\Admin;
 
-use App\Entity\BaseEntity;
+use App\Model\BaseModel;
 use EasySwoole\FastDb\Attributes\Property;
 use EasySwoole\FastDb\Beans\Query;
 
@@ -26,7 +26,7 @@ use EasySwoole\FastDb\Beans\Query;
  * @property int    $adminLastLoginTime
  * @property string $adminLastLoginIp
  */
-class AdminEntity extends BaseEntity
+class AdminModel extends BaseModel
 {
     #[Property(isPrimaryKey: true)]
     public int $adminId;
@@ -77,7 +77,7 @@ class AdminEntity extends BaseEntity
     /**
      * 登录成功后请返回更新后的bean
      */
-    public function login(): ?AdminEntity
+    public function login(): ?AdminModel
     {
         $where = [
             'adminAccount'  => $this->adminAccount,
@@ -89,7 +89,7 @@ class AdminEntity extends BaseEntity
     /**
      * 以account进行查询
      */
-    public function accountExist(array $field = ['*']): ?AdminEntity
+    public function accountExist(array $field = ['*']): ?AdminModel
     {
         return self::findRecord(function (Query $query) use ($field) {
             $query->fields($field)
@@ -97,7 +97,7 @@ class AdminEntity extends BaseEntity
         });
     }
 
-    public function getOneBySession(array $field = ['*']): ?AdminEntity
+    public function getOneBySession(array $field = ['*']): ?AdminModel
     {
         $this->queryLimit()->fields($field);
         $this->where(['adminSession' => $this->adminSession]);

@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace App\HttpController\Api\Admin;
 
-use App\Entity\Admin\AdminEntity;
+use App\Model\Admin\AdminModel;
 use EasySwoole\FastDb\Exception\RuntimeError;
 use EasySwoole\Http\Message\Status;
 use EasySwoole\HttpAnnotation\Attributes\Api;
@@ -57,11 +57,11 @@ class Auth extends AdminBase
     public function login()
     {
         $param = $this->request()->getRequestParam();
-        $entity = new AdminEntity();
-        $entity->adminAccount = $param['account'];
-        $entity->adminPassword = md5($param['password']);
+        $model = new AdminModel();
+        $model->adminAccount = $param['account'];
+        $model->adminPassword = md5($param['password']);
 
-        if ($user = $entity->login()) {
+        if ($user = $model->login()) {
             $sessionHash = md5(time() . $user->adminId);
             $user->updateWithLimit([
                 'adminLastLoginTime' => time(),

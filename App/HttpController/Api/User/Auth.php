@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace App\HttpController\Api\User;
 
-use App\Entity\User\UserEntity;
+use App\Model\User\UserModel;
 use EasySwoole\Http\Message\Status;
 use EasySwoole\HttpAnnotation\Attributes\Api;
 use EasySwoole\HttpAnnotation\Attributes\Description;
@@ -51,11 +51,11 @@ class Auth extends UserBase
     public function login()
     {
         $param = $this->request()->getRequestParam();
-        $entity = new UserEntity();
-        $entity->userAccount = $param['userAccount'];
-        $entity->userPassword = md5($param['userPassword']);
+        $model = new UserModel();
+        $model->userAccount = $param['userAccount'];
+        $model->userPassword = md5($param['userPassword']);
 
-        if ($userInfo = $entity->login()) {
+        if ($userInfo = $model->login()) {
             $sessionHash = md5(time() . $userInfo->userId);
             $userInfo->updateWithLimit([
                 'lastLoginIp'   => $this->clientRealIP(),

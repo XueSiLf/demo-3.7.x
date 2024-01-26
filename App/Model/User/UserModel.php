@@ -9,9 +9,9 @@
  */
 declare(strict_types=1);
 
-namespace App\Entity\User;
+namespace App\Model\User;
 
-use App\Entity\BaseEntity;
+use App\Model\BaseModel;
 use EasySwoole\FastDb\Attributes\Property;
 
 /**
@@ -30,7 +30,7 @@ use EasySwoole\FastDb\Attributes\Property;
  * @property int    $money
  * @property int    $frozenMoney
  */
-class UserEntity extends BaseEntity
+class UserModel extends BaseModel
 {
     protected string $table = 'user_list';
     protected string $primaryKey = 'userId';
@@ -92,7 +92,7 @@ class UserEntity extends BaseEntity
         return ['total' => $total, 'list' => $list];
     }
 
-    public function getOneByPhone(array $field = ['*']): ?UserEntity
+    public function getOneByPhone(array $field = ['*']): ?UserModel
     {
         $this->queryLimit()->fields($field);
         return $this->find(['phone' => $this->phone]);
@@ -101,7 +101,7 @@ class UserEntity extends BaseEntity
     /*
     * 登录成功后请返回更新后的bean
     */
-    public function login(): ?UserEntity
+    public function login(): ?UserModel
     {
         return $this->find([
             'userAccount'  => $this->userAccount,
@@ -109,7 +109,7 @@ class UserEntity extends BaseEntity
         ]);
     }
 
-    public function getOneBySession(array $field = ['*']): ?UserEntity
+    public function getOneBySession(array $field = ['*']): ?UserModel
     {
         $this->queryLimit()->fields($field);
         return $this->find(['userSession' => $this->userSession]);

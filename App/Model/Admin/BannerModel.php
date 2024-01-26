@@ -9,13 +9,13 @@
  */
 declare(strict_types=1);
 
-namespace App\Entity\Admin;
+namespace App\Model\Admin;
 
-use App\Entity\BaseEntity;
+use App\Model\BaseModel;
 use EasySwoole\FastDb\Attributes\Property;
 
 /**
- * Class BannerEntity
+ * Class BannerModel
  *
  * @property int    $bannerId
  * @property string $bannerName
@@ -24,7 +24,7 @@ use EasySwoole\FastDb\Attributes\Property;
  * @property string $bannerUrl
  * @property int    $state
  */
-class BannerEntity extends BaseEntity
+class BannerModel extends BaseModel
 {
     protected string $table = 'banner_list';
     protected string $primaryKey = 'bannerId';

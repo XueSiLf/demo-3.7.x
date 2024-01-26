@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace App\HttpController\Api\Admin;
 
-use App\Entity\User\UserEntity;
+use App\Model\User\UserModel;
 use EasySwoole\Http\Message\Status;
 use EasySwoole\HttpAnnotation\Attributes\Api;
 use EasySwoole\HttpAnnotation\Attributes\Description;
@@ -56,8 +56,8 @@ class User extends AdminBase
     {
         $page = (int)$this->input('page', 1);
         $limit = (int)$this->input('limit', 20);
-        $entity = new UserEntity();
-        $data = $entity->getAll($page, $this->input('keyword'), $limit);
+        $model = new UserModel();
+        $data = $model->getAll($page, $this->input('keyword'), $limit);
         $this->writeJson(Status::CODE_OK, $data, 'success');
     }
 
@@ -80,7 +80,7 @@ class User extends AdminBase
     public function getOne()
     {
         $param = $this->request()->getRequestParam();
-        $model = new UserEntity();
+        $model = new UserModel();
         $rs = $model->find((int)$param['userId']);
         if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, 'success');
@@ -125,9 +125,9 @@ class User extends AdminBase
     public function add()
     {
         $param = $this->request()->getRequestParam();
-        $entity = new UserEntity($param);
-        $entity->userPassword = md5($param['userPassword']);
-        $rs = $entity->insert();
+        $model = new UserModel($param);
+        $model->userPassword = md5($param['userPassword']);
+        $rs = $model->insert();
         if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, 'success');
         } else {
@@ -170,12 +170,12 @@ class User extends AdminBase
      */
     public function update()
     {
-        $entity = new UserEntity();
+        $model = new UserModel();
         $userId = $this->input('userId');
         /**
-         * @var $userInfo UserEntity
+         * @var $userInfo UserModel
          */
-        $userInfo = $entity->find((int)$userId);
+        $userInfo = $model->find((int)$userId);
         if (!$userInfo) {
             $this->writeJson(Status::CODE_BAD_REQUEST, [], '未找到该会员');
             return false;
@@ -216,8 +216,8 @@ class User extends AdminBase
     public function delete()
     {
         $param = $this->request()->getRequestParam();
-        $entity = new UserEntity(['userId' => $param['userId']]);
-        $rs = $entity->delete();
+        $model = new UserModel(['userId' => $param['userId']]);
+        $rs = $model->delete();
         if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, 'success');
         } else {

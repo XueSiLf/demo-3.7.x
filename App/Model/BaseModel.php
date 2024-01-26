@@ -9,11 +9,11 @@
  */
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Model;
 
 use EasySwoole\FastDb\AbstractInterface\AbstractEntity;
 
-class BaseEntity extends AbstractEntity
+class BaseModel extends AbstractEntity
 {
     protected string $table;
     protected string $primaryKey;
@@ -23,7 +23,7 @@ class BaseEntity extends AbstractEntity
         return $this->table;
     }
 
-    protected function where(array $where): BaseEntity
+    protected function where(array $where): BaseModel
     {
         foreach ($where as $field => $value) {
             if (is_array($value)) {

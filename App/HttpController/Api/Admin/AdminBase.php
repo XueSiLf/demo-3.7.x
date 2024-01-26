@@ -11,14 +11,14 @@ declare(strict_types=1);
 
 namespace App\HttpController\Api\Admin;
 
-use App\Entity\Admin\AdminEntity;
+use App\Model\Admin\AdminModel;
 use App\HttpController\Api\ApiBase;
 use EasySwoole\Http\Message\Status;
 
 class AdminBase extends ApiBase
 {
     // public 才会根据协程清除
-    public ?AdminEntity $who;
+    public ?AdminModel $who;
 
     // session 的 cookie头
     protected string $sessionKey = 'adminSession';
@@ -54,9 +54,9 @@ class AdminBase extends ApiBase
      * Author: XueSi <hui.huang8540@gmail.com>
      * Time: 00:28
      */
-    protected function getWho(): ?AdminEntity
+    protected function getWho(): ?AdminModel
     {
-        if (isset($this->who) && $this->who instanceof AdminEntity) {
+        if (isset($this->who) && $this->who instanceof AdminModel) {
             return $this->who;
         }
 
@@ -69,9 +69,9 @@ class AdminBase extends ApiBase
             return null;
         }
 
-        $adminEntity = new AdminEntity();
-        $adminEntity->adminSession = $sessionKey;
-        $this->who = $adminEntity->getOneBySession();
+        $adminModel = new AdminModel();
+        $adminModel->adminSession = $sessionKey;
+        $this->who = $adminModel->getOneBySession();
 
         return $this->who;
     }
