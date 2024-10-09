@@ -63,11 +63,11 @@ class Auth extends AdminBase
 
         if ($user = $model->login()) {
             $sessionHash = md5(time() . $user->adminId);
-            $user->updateWithLimit([
+            $user->setData([
                 'adminLastLoginTime' => time(),
                 'adminLastLoginIp'   => $this->clientRealIP(),
                 'adminSession'       => $sessionHash
-            ]);
+            ])->update();
 
             $rs = $user->toArray();
             unset($rs['adminPassword']);

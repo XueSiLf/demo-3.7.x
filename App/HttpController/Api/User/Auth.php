@@ -57,11 +57,11 @@ class Auth extends UserBase
 
         if ($userInfo = $model->login()) {
             $sessionHash = md5(time() . $userInfo->userId);
-            $userInfo->updateWithLimit([
+            $userInfo->setData([
                 'lastLoginIp'   => $this->clientRealIP(),
                 'lastLoginTime' => time(),
                 'userSession'   => $sessionHash
-            ]);
+            ])->update();
             $rs = $userInfo->toArray();
             unset($rs['userPassword']);
             $rs['userSession'] = $sessionHash;

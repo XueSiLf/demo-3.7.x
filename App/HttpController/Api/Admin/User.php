@@ -189,8 +189,8 @@ class User extends AdminBase
             'phone'        => $this->input('phone', $userInfo->phone),
         ];
 
-        $rs = $userInfo->updateWithLimit($update);
-        if ($rs === 0 || $rs === 1) {
+        $rs = $userInfo->setData($update)->update();
+        if ($rs) {
             $this->writeJson(Status::CODE_OK, $rs, 'success');
         } else {
             $this->writeJson(Status::CODE_BAD_REQUEST, [], 'update fail');

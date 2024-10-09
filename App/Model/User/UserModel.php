@@ -117,6 +117,6 @@ class UserModel extends BaseModel
 
     public function logout()
     {
-        return $this->where([$this->primaryKey => $this->userId])->updateWithLimit(['userSession' => '']);
+        return $this->where([$this->primaryKey => $this->userId])->setData(['userSession' => ''])->update();
     }
 }
